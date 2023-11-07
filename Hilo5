@@ -1,0 +1,71 @@
+public class ContadorVocalesSinSincronizacion {
+    private static final String texto = "Este es un ejemplo de texto con vocales";
+    private static int ContadorVocalA = 0;
+    private static int ContadorVocalE = 0;
+    private static int ContadorVocalI = 0;
+    private static int ContadorVocalO = 0;
+    private static int ContadorVocalU = 0;
+    private static int CuentaTotalDeVocales = 0;
+
+    public static void main(String[] args) {
+        // Crear y arrancar los hilos
+        Thread hiloA = new Thread(() -> contarVocales('a'));
+        Thread hiloE = new Thread(() -> contarVocales('e'));
+        Thread hiloI = new Thread(() -> contarVocales('i'));
+        Thread hiloO = new Thread(() -> contarVocales('o'));
+        Thread hiloU = new Thread(() -> contarVocales('u'));
+
+        hiloA.start();
+        hiloE.start();
+        hiloI.start();
+        hiloO.start();
+        hiloU.start();
+
+        try {
+            // Esperar a que todos los hilos terminen
+            hiloA.join();
+            hiloE.join();
+            hiloI.join();
+            hiloO.join();
+            hiloU.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        // Calcular la suma total de vocales
+        CuentaTotalDeVocales = ContadorVocalA + ContadorVocalE + ContadorVocalI + ContadorVocalO + ContadorVocalU;
+
+        // Imprimir resultados
+        System.out.println("ContadorVocalA: " + ContadorVocalA);
+        System.out.println("ContadorVocalE: " + ContadorVocalE);
+        System.out.println("ContadorVocalI: " + ContadorVocalI);
+        System.out.println("ContadorVocalO: " + ContadorVocalO);
+        System.out.println("ContadorVocalU: " + ContadorVocalU);
+        System.out.println("CuentaTotalDeVocales: " + CuentaTotalDeVocales);
+    }
+
+    private static void contarVocales(char vocal) {
+        for (int i = 0; i < texto.length(); i++) {
+            char c = texto.charAt(i);
+            if (c == vocal) {
+                switch (vocal) {
+                    case 'a':
+                        ContadorVocalA++;
+                        break;
+                    case 'e':
+                        ContadorVocalE++;
+                        break;
+                    case 'i':
+                        ContadorVocalI++;
+                        break;
+                    case 'o':
+                        ContadorVocalO++;
+                        break;
+                    case 'u':
+                        ContadorVocalU++;
+                        break;
+                }
+            }
+        }
+    }
+}
